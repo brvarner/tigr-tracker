@@ -1,6 +1,8 @@
 # dependencies
 node_modules/
+.env
 
 # production bundles
 dist/
 public/js/app.js
+credentials.csv
