@@ -5,14 +5,14 @@ import * as express from 'express';
 import * as path from 'path';
 import * as nodemailer from 'nodemailer';
 import * as cron from 'cron';
-
+import * as morgan from 'morgan';
 
 import apiRouter from './routes';
 import { CronJob } from 'cron';
 
 const app = express();
 
-const transporter = nodemailer.createTransport({ 
+const transporter = nodemailer.createTransport({
     host: String(process.env.MAIL_HOST),
     port: Number(process.env.MAIL_PORT),
     auth: {
@@ -73,22 +73,22 @@ app.get('/email/file', (req, res) => {
 // CronJobs
 let airpodCheck = new CronJob(
     '* * * * *',
-    function(){
-    fetch(process.env.AIRPOD_Q)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-        let body = pug.renderFile('emails/email.pug')
-        transporter.sendMail({
-            from: '"moose" <me@moose.dev>',
-            to: '"You there" <arthur.feest34@ethereal.email>',
-            subject: 'Fourth email',
-            html: body
-        })
-    console.log(`Airpods on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(error => console.log(error))
+    function () {
+        fetch(process.env.AIRPOD_Q)
+            .then(res => res.json())
+            .then(data => {
+                if (data.products[0].onSale) {
+                    let body = pug.renderFile('emails/email.pug')
+                    transporter.sendMail({
+                        from: '"moose" <me@moose.dev>',
+                        to: '"You there" <arthur.feest34@ethereal.email>',
+                        subject: 'Fourth email',
+                        html: body
+                    })
+                    console.log(`Airpods on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+                }
+            })
+            .catch(error => console.log(error))
     },
     null,
     true,
@@ -99,15 +99,15 @@ airpodCheck.start()
 
 let blackBeatsCheck = new CronJob(
     '* */2 * * *',
-    function(){
-    fetch(process.env.BEATS_QBLACK)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-    console.log(`Black Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(error => console.log(error))
+    function () {
+        fetch(process.env.BEATS_QBLACK)
+            .then(res => res.json())
+            .then(data => {
+                if (data.products[0].onSale) {
+                    console.log(`Black Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+                }
+            })
+            .catch(error => console.log(error))
     },
     null,
     true,
@@ -118,15 +118,15 @@ blackBeatsCheck.start()
 
 let grayBeatsCheck = new CronJob(
     '* */2 * * *',
-    function(){
-    fetch(process.env.BEATS_QGRAY)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-    console.log(`Sage Gray Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(error => console.log(error))
+    function () {
+        fetch(process.env.BEATS_QGRAY)
+            .then(res => res.json())
+            .then(data => {
+                if (data.products[0].onSale) {
+                    console.log(`Sage Gray Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+                }
+            })
+            .catch(error => console.log(error))
     },
     null,
     true,
@@ -137,15 +137,15 @@ grayBeatsCheck.start()
 
 let blackJabraCheck = new CronJob(
     '* * * * *',
-    function(){
-    fetch(process.env.JABRA_QBLACK)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-    console.log(`Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(error => console.log(error))
+    function () {
+        fetch(process.env.JABRA_QBLACK)
+            .then(res => res.json())
+            .then(data => {
+                if (data.products[0].onSale) {
+                    console.log(`Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+                }
+            })
+            .catch(error => console.log(error))
     },
     null,
     true,
@@ -156,15 +156,15 @@ blackJabraCheck.start()
 
 let titeJabraCheck = new CronJob(
     '* * * * *',
-    function(){
-    fetch(process.env.JABRA_QTBLACK)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-    console.log(`Titanium Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(error => console.log(error))
+    function () {
+        fetch(process.env.JABRA_QTBLACK)
+            .then(res => res.json())
+            .then(data => {
+                if (data.products[0].onSale) {
+                    console.log(`Titanium Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+                }
+            })
+            .catch(error => console.log(error))
     },
     null,
     true,
@@ -175,8 +175,9 @@ titeJabraCheck.start()
 
 // Standard Middleware
 app.use(express.static('public'));
-app.use(express.json())
-app.use(apiRouter);
+app.use(morgan('dev'));
+app.use(express.json());
+app.use('/api', apiRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port: ${port}`));
