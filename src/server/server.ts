@@ -58,44 +58,73 @@ app.get('/email/file', (req, res) => {
         .catch(error => res.send(error))
 })
 
-// app.get('/test', (req, res) => {
-//     fetch(process.env.JABRA_QTBLACK)
-//     .then(res => res.json())
-//     .then(data => { console.log(data)
-//       if (data.products[0].onSale){
-//     console.log(`Titanium Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-//     }
-//     })
-//     .catch(error => console.log(error))
-// })
-
-
-// CronJobs
-let airpodCheck = new CronJob(
-    '* * * * *',
-    function(){
+app.get('/test', (req, res) => {
     fetch(process.env.AIRPOD_Q)
     .then(res => res.json())
     .then(data => { 
       if (data.products[0].onSale){
-        let body = pug.renderFile('emails/email.pug')
-        transporter.sendMail({
-            from: '"moose" <me@moose.dev>',
-            to: '"You there" <arthur.feest34@ethereal.email>',
-            subject: 'Fourth email',
-            html: body
-        })
+
+    
+
+    // Check database and find who's looking for this product being on sale
+    // Check emails table and see if users have been emailed about the product in the past three days
+    // Then we'll have a list of people from querying the email table that ties us to the users filter through the people from the email table that need to be emailed, 
+    // and send the pug email to each onSale
+    // After the email is sent, we need to update the database again to ensure that people aren't getting emailed multiple times
     console.log(`Airpods on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+    const compiledFunction = pug.compileFile('emails/airpod.pug')
+    transporter.sendMail({
+        from: '"moose" <me@moose.dev>',
+        to: '"You there" <arthur.feest34@ethereal.email>',
+        subject: 'Fourth email',
+        html: compiledFunction({
+            price: data.products[0].salePrice,
+            normalPrice: data.products[0].regularPrice,
+            thumbnail: data.products[0].thumbnailImage
+        })
+    })
+
     }
     })
     .catch(error => console.log(error))
-    },
-    null,
-    true,
-    'America/Chicago'
-);
+})
 
-airpodCheck.start()
+
+// CronJobs
+// let airpodCheck = new CronJob(
+//     '* * * * *',
+//     function(){
+//     fetch(process.env.AIRPOD_Q)
+//     .then(res => res.json())
+//     .then(data => { 
+//       if (data.products[0].onSale){
+//     // Check database and find who's looking for this product being on sale
+//     // Check emails table and see if users have been emailed about the product in the past three days
+//     // Then we'll have a list of people from querying the email table that ties us to the users filter through the people from the email table that need to be emailed, and send the pug email to each onSale
+//     // After the email is sent, we need to update the database again to ensure that people aren't getting emailed multiple times
+//     console.log(`Airpods on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+//     const compiledFunction = pug.compileFile('airpod.pug')
+//     transporter.sendMail({
+//         from: '"moose" <me@moose.dev>',
+//         to: '"You there" <arthur.feest34@ethereal.email>',
+//         subject: 'Fourth email',
+//         html: compiledFunction({
+//             price: data.products[0].salePrice,
+//             normalPrice: data.products[0].regularPrice,
+//             thumbnail: data.products[0].thumbnailImage
+//         })
+//     })
+
+//     }
+//     })
+//     .catch(error => console.log(error))
+//     },
+//     null,
+//     true,
+//     'America/Chicago'
+// );
+
+// airpodCheck.start()
 
 let blackBeatsCheck = new CronJob(
     '* */2 * * *',
