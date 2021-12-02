@@ -22,3 +22,11 @@ $theme-colors: (
 );
 
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+
+.admin-input-description {
+	height: 20px;
+}
+
+#admin-product-title {
+	height: 30px;
+}
