@@ -107,11 +107,11 @@ app.get('/test', (req, res) => {
 //     transporter.sendMail({
 //         from: '"moose" <me@moose.dev>',
 //         to: '"You there" <arthur.feest34@ethereal.email>',
-//         subject: 'Fourth email',
+//         subject: 'Airpod Sale!',
 //         html: compiledFunction({
 //             price: data.products[0].salePrice,
 //             normalPrice: data.products[0].regularPrice,
-//             thumbnail: data.products[0].thumbnailImage
+//             thumbnail: data.products[0].thumbnailImage,
 //         })
 //     })
 
@@ -136,7 +136,7 @@ let blackBeatsCheck = new CronJob(
     console.log(`Black Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
     }
     })
-    .catch(error => console.log(error))
+    .catch(console.log('Item not on sale, or product not found'))
     },
     null,
     true,
@@ -155,7 +155,7 @@ let grayBeatsCheck = new CronJob(
     console.log(`Sage Gray Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
     }
     })
-    .catch(error => console.log(error))
+    .catch(console.log('Item not on sale, or product not found'))
     },
     null,
     true,
@@ -174,7 +174,7 @@ let blackJabraCheck = new CronJob(
     console.log(`Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
     }
     })
-    .catch(error => console.log(error))
+    .catch(console.log('Item not on sale, or product not found'))
     },
     null,
     true,
@@ -205,7 +205,7 @@ titeJabraCheck.start()
 // Standard Middleware
 app.use(express.static('public'));
 app.use(express.json())
-app.use('/api', apiRouter);
+// app.use('/api', apiRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port: ${port}`));

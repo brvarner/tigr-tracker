@@ -1,5 +1,5 @@
 // First override some or all individual color variables
-$primary: #25408f;
+$primary: #2C6E49;
 $secondary: #8f5325;
 $success: #3e8d63;
 $info: #13101c;
@@ -19,6 +19,10 @@ $theme-colors: (
 	light: $light,
 	dark: $dark,
 	// add any additional color below
+);
+
+$body: (
+	background-image: linear-gradient(to right,#d38236,#4c956c)	
 );
 
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
