@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Form from './Form';
 
 
@@ -12,7 +13,7 @@ const Hero: React.FC<HeroProps> = props => {
         <h1 className="display-4 fw-bold lh-1">Let the Deals Find You</h1>
         <p className="lead">The Tigr Tracker finds the deals you've been looking for and lets you know about them before anybody else. Just follow the product you want, enter your email, sit back, and wait.</p>
         <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-          <button type="button" className="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Learn More</button>
+          <Link to={'./about'} className="btn btn-primary btn-lg px-4 me-md-2 fw-bold" >Learn More</Link>
           <button type="button" className="btn btn-outline-secondary btn-lg px-4">Sign-Up</button>
         </div>
       </div>
