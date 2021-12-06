@@ -32,7 +32,7 @@ const Products = (props: ProductsProps) => {
                     <div className="col-2" key={`id`}>
                         <div className="card shadow-lg my-2">
                             <div className="card-body">
-                                {/* <img src={product.image} alt="item image" className="card-img-top" /> */}
+                                <img src={product.image.toString('base64')} alt="item image" className="card-img-top" />
                                 <h4 className="card-title">{product.product_title}</h4>
                                 <p className="card-subtitle text-muted">{product.description}</p>
                                 <p className="card-text">Price: $ {product.regular_price}</p>
