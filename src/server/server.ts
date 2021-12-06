@@ -1,10 +1,9 @@
 require('dotenv').config()
-const fetch = require('node-fetch')
+import fetch from "node-fetch"
 import * as pug from 'pug'
 import * as express from 'express';
 import * as path from 'path';
 import * as nodemailer from 'nodemailer';
-import * as cron from 'cron';
 
 
 // import apiRouter from './api/apiRouter';
@@ -12,7 +11,9 @@ import { CronJob } from 'cron';
 
 const app = express();
 
-const transporter = nodemailer.createTransport({ 
+app.use(express.json())
+
+const transporter = nodemailer.createTransport({
     host: String(process.env.MAIL_HOST),
     port: Number(process.env.MAIL_PORT),
     auth: {
@@ -60,34 +61,45 @@ app.get('/email/file', (req, res) => {
 
 app.get('/test', (req, res) => {
     fetch(process.env.AIRPOD_Q)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
+        .then(res => res.json())
+        .then(data => {
+            if (data.products[0].onSale) {
 
-    
 
-    // Check database and find who's looking for this product being on sale
-    // Check emails table and see if users have been emailed about the product in the past three days
-    // Then we'll have a list of people from querying the email table that ties us to the users filter through the people from the email table that need to be emailed, 
-    // and send the pug email to each onSale
-    // After the email is sent, we need to update the database again to ensure that people aren't getting emailed multiple times
-    console.log(`Airpods on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    const compiledFunction = pug.compileFile('emails/airpod.pug')
-    transporter.sendMail({
-        from: '"moose" <me@moose.dev>',
-        to: '"You there" <arthur.feest34@ethereal.email>',
-        subject: 'Fourth email',
-        html: compiledFunction({
-            price: data.products[0].salePrice,
-            normalPrice: data.products[0].regularPrice,
-            thumbnail: data.products[0].thumbnailImage
+
+                // Check database and find who's looking for this product being on sale
+                // Check emails table and see if users have been emailed about the product in the past three days
+                // Then we'll have a list of people from querying the email table that ties us to the users filter through the people from the email table that need to be emailed, 
+                // and send the pug email to each onSale
+                // After the email is sent, we need to update the database again to ensure that people aren't getting emailed multiple times
+                console.log(`Airpods on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+                const compiledFunction = pug.compileFile('emails/airpod.pug')
+                transporter.sendMail({
+                    from: '"moose" <me@moose.dev>',
+                    to: '"You there" <arthur.feest34@ethereal.email>',
+                    subject: 'Fourth email',
+                    html: compiledFunction({
+                        price: data.products[0].salePrice,
+                        normalPrice: data.products[0].regularPrice,
+                        thumbnail: data.products[0].thumbnailImage
+                    })
+                })
+
+            }
         })
-    })
+        .catch(error => console.log(error))
+});
 
+app.get("/api/products", async (req, res) => {
+    try {
+        const products = await fetch("https://api.bestbuy.com/v1/products((search=in-ear)&regularPrice>=99.99&(categoryPath.id=abcat0204000))?apiKey=" + process.env.KEY + "&show=name,regularPrice,dollarSavings,salePrice,image,upc,description&pageSize=80&format=json")
+        //const products = await fetch("https://api.bestbuy.com/v1/products((search=bluetooth)&regularPrice>=59.99&(categoryPath.id=abcat0204000))?apiKey=" + process.env.KEY + "&sort=bestSellingRank.asc&show=bestSellingRank,accessories.sku,customerReviewAverage,color,description,manufacturer,name,onSale,regularPrice,sku,thumbnailImage,salePrice&pageSize=25&format=json")
+        const data = await products.json()
+        res.json(data)
+    } catch (error) {
+        res.status(500).send(new Error("Error fetching products"));
     }
-    })
-    .catch(error => console.log(error))
-})
+});
 
 
 // CronJobs
@@ -126,86 +138,86 @@ app.get('/test', (req, res) => {
 
 // airpodCheck.start()
 
-let blackBeatsCheck = new CronJob(
-    '* */2 * * *',
-    function(){
-    fetch(process.env.BEATS_QBLACK)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-    console.log(`Black Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(console.log('Item not on sale, or product not found'))
-    },
-    null,
-    true,
-    'America/Chicago'
-);
+// let blackBeatsCheck = new CronJob(
+//     '* */2 * * *',
+//     function () {
+//         fetch(process.env.BEATS_QBLACK)
+//             .then(res => res.json())
+//             .then(data => {
+//                 if (data.products[0].onSale) {
+//                     console.log(`Black Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+//                 }
+//             })
+//             .catch(console.log('Item not on sale, or product not found'))
+//     },
+//     null,
+//     true,
+//     'America/Chicago'
+// );
 
-blackBeatsCheck.start()
+// blackBeatsCheck.start()
 
-let grayBeatsCheck = new CronJob(
-    '* */2 * * *',
-    function(){
-    fetch(process.env.BEATS_QGRAY)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-    console.log(`Sage Gray Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(console.log('Item not on sale, or product not found'))
-    },
-    null,
-    true,
-    'America/Chicago'
-);
+// let grayBeatsCheck = new CronJob(
+//     '* */2 * * *',
+//     function () {
+//         fetch(process.env.BEATS_QGRAY)
+//             .then(res => res.json())
+//             .then(data => {
+//                 if (data.products[0].onSale) {
+//                     console.log(`Sage Gray Beats Fit Pros on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+//                 }
+//             })
+//             .catch(console.log('Item not on sale, or product not found'))
+//     },
+//     null,
+//     true,
+//     'America/Chicago'
+// );
 
-grayBeatsCheck.start()
+// grayBeatsCheck.start()
 
-let blackJabraCheck = new CronJob(
-    '* * * * *',
-    function(){
-    fetch(process.env.JABRA_QBLACK)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-    console.log(`Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(console.log('Item not on sale, or product not found'))
-    },
-    null,
-    true,
-    'America/Chicago'
-);
+// let blackJabraCheck = new CronJob(
+//     '* * * * *',
+//     function () {
+//         fetch(process.env.JABRA_QBLACK)
+//             .then(res => res.json())
+//             .then(data => {
+//                 if (data.products[0].onSale) {
+//                     console.log(`Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+//                 }
+//             })
+//             .catch(console.log('Item not on sale, or product not found'))
+//     },
+//     null,
+//     true,
+//     'America/Chicago'
+// );
 
-blackJabraCheck.start()
+// blackJabraCheck.start()
 
-let titeJabraCheck = new CronJob(
-    '* * * * *',
-    function(){
-    fetch(process.env.JABRA_QTBLACK)
-    .then(res => res.json())
-    .then(data => { 
-      if (data.products[0].onSale){
-    console.log(`Titanium Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
-    }
-    })
-    .catch(error => console.log(error))
-    },
-    null,
-    true,
-    'America/Chicago'
-);
+// let titeJabraCheck = new CronJob(
+//     '* * * * *',
+//     function () {
+//         fetch(process.env.JABRA_QTBLACK)
+//             .then(res => res.json())
+//             .then(data => {
+//                 if (data.products[0].onSale) {
+//                     console.log(`Titanium Black Jabra Elite 75ts on Sale! Regular Price: ${data.products[0].regularPrice}, Sale Price: ${data.products[0].salePrice}`)
+//                 }
+//             })
+//             .catch(error => console.log(error))
+//     },
+//     null,
+//     true,
+//     'America/Chicago'
+// );
 
-titeJabraCheck.start()
+// titeJabraCheck.start()
 
 // Standard Middleware
 app.use(express.static('public'));
-app.use(express.json())
-// app.use('/api', apiRouter);
 
+// app.use('/api', apiRouter);
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port: ${port}`));
