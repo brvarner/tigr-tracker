@@ -16,13 +16,37 @@ const Products = (props: ProductsProps) => {
 
     React.useEffect(() => {
         (async () => {
-          const res = await fetch('/api/products');
-          if (res.ok) {
-            const products = await res.json();
-            setProducts(products);
-          }
+            const res = await fetch('/api/products');
+            if (res.ok) {
+                const products = await res.json();
+                setProducts(products);
+            }
         })()
-      }, [])
+    }, [])
+
+
+    // let imageConverter = (blob) => {
+    //     console.log(blob)
+    //     let reader = new FileReader()
+    //     reader.readAsDataURL(blob);
+    //     reader.onloadend = function () {
+    //         let base64data = reader.result
+    //         console.log(base64data)
+    //     }
+    //     return reader
+
+
+    // }
+
+    function imageConverter(blob) {
+        console.log(blob)
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result)
+            reader.readAsDataURL(blob)
+        })
+    }
+    
 
     return (
         <main className="container" >
@@ -32,7 +56,7 @@ const Products = (props: ProductsProps) => {
                     <div className="col-2" key={`id`}>
                         <div className="card shadow-lg my-2">
                             <div className="card-body">
-                                <img src={product.image.toString('base64')} alt="item image" className="card-img-top" />
+                                <img src={imageConverter(product.image)} alt="item image" className="card-img-top" />
                                 <h4 className="card-title">{product.product_title}</h4>
                                 <p className="card-subtitle text-muted">{product.description}</p>
                                 <p className="card-text">Price: $ {product.regular_price}</p>
