@@ -4,6 +4,7 @@ import * as pug from 'pug'
 import * as express from 'express';
 import * as path from 'path';
 import * as nodemailer from 'nodemailer';
+import apiRouter from "./routes"
 
 
 // import apiRouter from './api/apiRouter';
@@ -90,16 +91,28 @@ app.get('/test', (req, res) => {
         .catch(error => console.log(error))
 });
 
-app.get("/api/products", async (req, res) => {
-    try {
-        const products = await fetch("https://api.bestbuy.com/v1/products((search=in-ear)&regularPrice>=99.99&(categoryPath.id=abcat0204000))?apiKey=" + process.env.KEY + "&show=name,regularPrice,dollarSavings,salePrice,image,upc,description&pageSize=80&format=json")
-        //const products = await fetch("https://api.bestbuy.com/v1/products((search=bluetooth)&regularPrice>=59.99&(categoryPath.id=abcat0204000))?apiKey=" + process.env.KEY + "&sort=bestSellingRank.asc&show=bestSellingRank,accessories.sku,customerReviewAverage,color,description,manufacturer,name,onSale,regularPrice,sku,thumbnailImage,salePrice&pageSize=25&format=json")
-        const data = await products.json()
-        res.json(data)
-    } catch (error) {
-        res.status(500).send(new Error("Error fetching products"));
-    }
-});
+// app.get("/api/products", async (req, res) => {
+        
+//          try {
+//              const products = await fetch('/api/products')
+//              //const products = await fetch("https://api.bestbuy.com/v1/products((search=bluetooth)&regularPrice>=59.99&(categoryPath.id=abcat0204000))?apiKey=" + process.env.KEY + "&sort=bestSellingRank.asc&show=bestSellingRank,accessories.sku,customerReviewAverage,color,description,manufacturer,name,onSale,regularPrice,sku,thumbnailImage,salePrice&pageSize=25&format=json")
+//             const data = await products.json()
+//              res.json(data)
+//          } catch (error) {
+//              res.status(500).send(new Error("Error fetching products"));
+//          }
+//      });
+
+// app.get("/api/products", async (req, res) => {
+//     try {
+//         const products = await fetch("https://api.bestbuy.com/v1/products((search=in-ear)&regularPrice>=99.99&(categoryPath.id=abcat0204000))?apiKey=" + process.env.KEY + "&show=name,regularPrice,dollarSavings,salePrice,image,upc,description&pageSize=80&format=json")
+//         //const products = await fetch("https://api.bestbuy.com/v1/products((search=bluetooth)&regularPrice>=59.99&(categoryPath.id=abcat0204000))?apiKey=" + process.env.KEY + "&sort=bestSellingRank.asc&show=bestSellingRank,accessories.sku,customerReviewAverage,color,description,manufacturer,name,onSale,regularPrice,sku,thumbnailImage,salePrice&pageSize=25&format=json")
+//         const data = await products.json()
+//         res.json(data)
+//     } catch (error) {
+//         res.status(500).send(new Error("Error fetching products"));
+//     }
+// });
 
 
 // CronJobs
@@ -217,7 +230,7 @@ app.get("/api/products", async (req, res) => {
 // Standard Middleware
 app.use(express.static('public'));
 
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port: ${port}`));
