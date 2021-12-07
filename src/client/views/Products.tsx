@@ -3,16 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 const Products = (props: ProductsProps) => {
     const [products, setProducts] = useState([]);
-
-    // const getProducts = async () => {
-    //     const res = await fetch('/api/products');
-    //     const products = await res.json();
-    //     setProducts(products);
-    // };
-
-    // useEffect(() => {
-    //     getProducts();
-    // }, []);
+    
 
     React.useEffect(() => {
         (async () => {
@@ -24,43 +15,19 @@ const Products = (props: ProductsProps) => {
         })()
     }, [])
 
-
-    // let imageConverter = (blob) => {
-    //     console.log(blob)
-    //     let reader = new FileReader()
-    //     reader.readAsDataURL(blob);
-    //     reader.onloadend = function () {
-    //         let base64data = reader.result
-    //         console.log(base64data)
-    //     }
-    //     return reader
-
-
-    // }
-
-    function imageConverter(blob) {
-        console.log(blob)
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result)
-            reader.readAsDataURL(blob)
-        })
-    }
     
-
     return (
         <main className="container" >
             <h1> Products </h1>
             <section className="row justify-content-center mt-5">
                 {products.map(product => (
-                    <div className="col-2" key={`id`}>
+                    <div className="col-2" key={`product-card-${product.id}`}>
                         <div className="card shadow-lg my-2">
                             <div className="card-body">
-                                <img src={imageConverter(product.image)} alt="item image" className="card-img-top" />
-                                <h4 className="card-title">{product.product_title}</h4>
+                                <img src={product.image} alt="item image" className="card-img-top" />
+                                <h4 className="card-title my-2">{product.product_title}</h4>
                                 <p className="card-subtitle text-muted">{product.description}</p>
                                 <p className="card-text">Price: $ {product.regular_price}</p>
-                                {/* <p className="card-text">Price: Savings $ {product.dollarSavings}</p> */}
                                 <p className="card-text">Sale Price: $ {product.sale_price}</p>
                                 <a href="#" className="card-link btn btn-primary">Track</a>
                             </div>
@@ -71,8 +38,6 @@ const Products = (props: ProductsProps) => {
         </main>
     )
 }
-
-
 
 interface ProductsProps { }
 
