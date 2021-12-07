@@ -5,6 +5,7 @@ import * as express from 'express';
 import * as path from 'path';
 import * as nodemailer from 'nodemailer';
 import * as cron from 'cron';
+import apiRouter from './routes'
 
 
 // import apiRouter from './api/apiRouter';
@@ -205,7 +206,7 @@ titeJabraCheck.start()
 // Standard Middleware
 app.use(express.static('public'));
 app.use(express.json())
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port: ${port}`));

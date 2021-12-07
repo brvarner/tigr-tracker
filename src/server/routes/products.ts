@@ -5,13 +5,16 @@ import db from '../db';
 const router = Router();
 
 
-router.get('/:productid?', async (req, res) => {
-    const id = Number(req.params.productid);
+router.get('/:id?', async (req, res) => {
+    const id = Number(req.params.id);
     try {
         if (id) {
-            res.json({ id, msg: 'get one test' });
+            const [product] = await db.products.one(id); 
+            res.json(product)
         } else {
-            res.json({ id, msg: 'get all test' });
+            const products = await db.products.all();
+            console.log(products);
+            res.json(products)
         }
     } catch (error) {
         console.log(error);

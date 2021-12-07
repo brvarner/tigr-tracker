@@ -22,9 +22,11 @@ export const Query = <T = any>(query: string, values?: Array<string | number>) =
 
 
 import userproducts from './queries/userproducts';
-import users from './queries/users';      
+import users from './queries/users'; 
+import products from './queries/products';     
 
 export default {
     users,
-    userproducts
+    userproducts,
+    products
 }
