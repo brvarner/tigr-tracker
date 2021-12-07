@@ -6,7 +6,8 @@ import Carousel from 'react-bootstrap/Carousel'
 const ProdCarousel: React.FC<ProdCarouselProps> = props => {
 
   return (
-    <Carousel className="mw-300px">
+    <div className="d-flex justify-content-center" style={{backgroundColor: 'white'}}>
+    <Carousel className="w-50">
       <Carousel.Item>
         <img
           className="d-block w-100"
@@ -33,7 +34,7 @@ const ProdCarousel: React.FC<ProdCarouselProps> = props => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="media/carousel/HaircareCarousel.jpg"
+          src="media/carousel/Haircare-Carousel.jpg"
           alt="Third slide"
         />
 
@@ -43,6 +44,7 @@ const ProdCarousel: React.FC<ProdCarouselProps> = props => {
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
+    </div>
   );
 };
 

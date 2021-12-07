@@ -15,10 +15,6 @@ const Home: React.FC<HomeProps> = props => {
             <Hero />
             <Carousel />
             <Portfolio />
-            <Attribution />
-            <section className="col-5 justify-content-center card rounded" style={{width: `20rem`}}>
-                     {/* <div className="card-body"><Form submitForm={{}} /></div> */}
-            </section>
         </main>
     );
 };
