@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Form from './Form';
+import Modal from './Modal';
 
 
 const Hero: React.FC<HeroProps> = props => {
@@ -14,7 +15,8 @@ const Hero: React.FC<HeroProps> = props => {
         <p className="lead">The Tigr Tracker finds the deals you've been looking for and lets you know about them before anybody else. Just follow the product you want, enter your email, sit back, and wait.</p>
         <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
           <Link to={'./about'} className="btn btn-primary btn-lg px-4 me-md-2 fw-bold" >Learn More</Link>
-          <button type="button" className="btn btn-outline-secondary btn-lg px-4">Sign-Up</button>
+          {/* <button type="button" className="btn btn-outline-secondary btn-lg px-4">Sign Up</button> */}
+          <Modal />
         </div>
       </div>
       <div className="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
