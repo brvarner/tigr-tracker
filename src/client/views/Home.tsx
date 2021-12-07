@@ -7,6 +7,7 @@ import Hero from '../components/Hero';
 
 
 
+
 const Home: React.FC<HomeProps> = props => {
 
     return (
