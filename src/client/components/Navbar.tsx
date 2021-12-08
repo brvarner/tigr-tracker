@@ -3,24 +3,12 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
     return (
-        // <nav className="navbar navbar-expand-lg navbar-light bg-success">
-        //     <div className="container justify-content-between">
-        //         <Link to="/" className="navbar-brand mr-10"> <img src="media/Logo.png" style={{width: `5rem`}} alt="" /></Link>
-        //         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-        //             <div className="navbar-nav">
-        //                 <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-
-        //                 </ul>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </nav>
-        <nav className="navbar navbar-expand-lg navbar-light bg-success" id="mainNav">
+        <nav className="navbar navbar-expand-lg navbar-light bg-success" id="mainNav" style={{ height:"90px"}}>
         <div className="container">
-        <Link to="/" className="navbar-brand"> <img src="media/Logo.png" alt="" id="nav-image" /></Link>
+        <Link to="/" className="navbar-brand"> <img src="media/Logo.png" alt="" id="nav-image" style={{ width:"120px", height:"105px"}} /></Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
-                <i className="fas fa-bars ms-1"></i>
+                <i className="fas fa-bars ms-1" ></i>
             </button>
             <div className="collapse navbar-collapse" id="navbarResponsive">
                 <ul className="navbar-nav text-uppercase text-dark ms-auto py-4 py-lg-0">

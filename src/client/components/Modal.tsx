@@ -7,7 +7,7 @@ const Modal: React.FC<ModalProps> = props => {
 
 	return (
         <>
-        <button type="button" className="btn btn-outline-secondary btn-lg px-4" data-toggle='modal'  data-target='#exampleModalCenter'>Sign Up</button>
+        <button type="button" className="btn btn-primary btn-xl text-uppercase mx-3" data-toggle='modal'  data-target='#exampleModalCenter'>Sign Up</button>
 
          <div className="modal fade col-6" id="exampleModalCenter" tabIndex='-1' role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered" role="document">

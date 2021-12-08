@@ -6,8 +6,8 @@ import Carousel from 'react-bootstrap/Carousel'
 const ProdCarousel: React.FC<ProdCarouselProps> = props => {
 
   return (
-    <div className="d-flex justify-content-center" style={{backgroundColor: 'white'}}>
-    <Carousel className="w-50">
+    <div className="d-flex justify-content-center" style={{backgroundColor: '#fefee3'}}>
+    <Carousel className="w-50 mt-5">
       <Carousel.Item>
         <img
           className="d-block w-100"

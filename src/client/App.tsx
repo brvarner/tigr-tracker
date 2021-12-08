@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import About from './views/About';
 import Products from './views/Products';
 import Admin from './views/Admin'
+import MyProducts from './views/MyProducts';
 
 const App = () => {
 	return (
@@ -17,6 +18,7 @@ const App = () => {
 					<Route path="/" element={<Home />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/newproduct" element={<Products />} />
+					<Route path="/products" element={<MyProducts />} />
 					<Route path="/admin" element={<Admin />} />
 				</Routes>
 			</BrowserRouter>
